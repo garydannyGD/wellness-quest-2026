@@ -1,91 +1,1410 @@
 
--- WELLNESS QUEST 2026
--- Run in the Supabase SQL Editor.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172957">
+<title>Wellness Quest 2026 | Sunway College Ipoh</title>
+<style>
+:root {
+  --blue:#314795;
+  --dark:#172957;
+  --mint:#d9f4ed;
+  --teal:#008f83;
+  --pink:#ff4670;
+  --gold:#ffca53;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:system-ui,Arial,sans-serif;
+  color:var(--dark);
+  background:linear-gradient(160deg,#ffffff,#dcf4ef);
+  min-height:100vh;
+}
+button,input { font:inherit; }
+button { cursor:pointer; }
+button:disabled { cursor:default;opacity:.7; }
+button:focus-visible,input:focus-visible {
+  outline:3px solid #ec9c00;
+  outline-offset:3px;
+}
+header {
+  padding:16px 5%;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px solid #e1e9ec;
+}
+header strong { color:var(--blue); }
+header button {
+  border:0;
+  background:#e7f4f0;
+  border-radius:12px;
+  padding:10px 14px;
+}
+main {
+  max-width:850px;
+  margin:auto;
+  padding:24px 16px 70px;
+}
+.screen { display:none; }
+.screen.active { display:block; }
+.hero {
+  text-align:center;
+  padding:25px 5px;
+}
+.hero h1 {
+  font-size:clamp(35px,8vw,62px);
+  line-height:1.06;
+  margin:15px 0;
+}
+.hero p {
+  color:#536779;
+  line-height:1.7;
+}
+.pill {
+  display:inline-block;
+  background:#d9f4ed;
+  color:#087f76;
+  border-radius:30px;
+  padding:8px 13px;
+  font-size:12px;
+  font-weight:800;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.card,.panel {
+  background:white;
+  border-radius:22px;
+  padding:24px;
+  border:1px solid #e2eaf0;
+  box-shadow:0 10px 30px #122d4510;
+}
+.card {
+  display:flex;
+  flex-direction:column;
+}
+.card .big { font-size:58px; }
+.card p {
+  flex:1;
+  color:#627487;
+  line-height:1.7;
+}
+.btn {
+  padding:14px 17px;
+  border:0;
+  border-radius:13px;
+  background:var(--blue);
+  color:white;
+  font-weight:800;
+}
+.btn.alt {
+  background:#e7eff4;
+  color:var(--dark);
+}
+.btn.pink { background:var(--pink); }
+.card .btn {
+  width:100%;
+  margin-top:16px;
+}
+.input {
+  width:100%;
+  border:2px solid #dce6ec;
+  border-radius:12px;
+  padding:14px;
+  margin:8px 0;
+}
+.toolbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+.track {
+  height:10px;
+  background:#e8edf2;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:22px;
+}
+.fill {
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#5dcbb0,#5269ce);
+  transition:width .3s;
+}
+.doctor {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:17px;
+  background:#e7f7f3;
+  border-radius:18px;
+  margin-bottom:22px;
+}
+.face {
+  font-size:53px;
+  animation:bob 2.5s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-5px); }
+}
+.question {
+  font-size:clamp(22px,4vw,30px);
+}
+.options {
+  display:grid;
+  gap:12px;
+  margin:20px 0;
+}
+.option {
+  text-align:left;
+  border:2px solid #e2e9f0;
+  background:white;
+  padding:17px;
+  border-radius:13px;
+  color:var(--dark);
+  font-weight:700;
+}
+.option:hover:not(:disabled) {
+  border-color:var(--blue);
+  background:#f4f6ff;
+}
+.option.correct {
+  background:#dff8e8;
+  border-color:#23a66e;
+}
+.option.wrong {
+  background:#ffe6e8;
+  border-color:#e15b70;
+}
+.feedback {
+  background:#eaf7f4;
+  padding:20px;
+  border-radius:15px;
+  line-height:1.7;
+}
+.feedback .btn { margin-top:15px; }
+.hidden { display:none!important; }
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:18px;
+}
+.stat {
+  padding:13px 8px;
+  text-align:center;
+  background:#e7f2f6;
+  border-radius:13px;
+}
+.stat small {
+  display:block;
+  color:#54707a;
+}
+.stat strong { font-size:24px; }
+.scene {
+  background:#ebf8f3;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:18px;
+  line-height:1.7;
+}
+.scene .big { font-size:50px; }
+.center { text-align:center; }
+.points {
+  font-size:58px;
+  font-weight:900;
+  color:var(--blue);
+  margin:15px 0;
+}
+.badge-card {
+  background:linear-gradient(145deg,#263f93,#13aa98);
+  border-radius:22px;
+  padding:30px;
+  color:white;
+  text-align:center;
+}
+.badge-card .big { font-size:65px; }
+.board-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 5px;
+  border-bottom:1px solid #e4ebef;
+}
+.board-row .name {
+  flex:1;
+  overflow-wrap:anywhere;
+}
+.board-row .score { font-weight:900; }
+.status {
+  color:#54697b;
+  font-size:14px;
+  line-height:1.6;
+}
+.actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+footer {
+  text-align:center;
+  color:#5d7180;
+  font-size:12px;
+  line-height:1.7;
+  margin-top:34px;
+}
+@media(max-width:580px) {
+  .grid { grid-template-columns:1fr; }
+  .card,.panel { padding:19px; }
+  .stat strong { font-size:20px; }
+}
+</style>
+</head>
+<body>
 
-create table if not exists public.scores (
-  id bigint generated always as identity primary key,
-  player_id uuid not null,
-  nickname text not null
-    check (
-      nickname ~ '^[A-Za-z0-9 _-]{2,18}$'
-    ),
-  game text not null
-    check (game in ('quiz','life')),
-  score integer not null
-    check (score between 0 and 100),
-  created_at timestamptz not null default now()
+<header>
+  <strong>💚 WELLNESS QUEST 2026</strong>
+  <button id="homeButton">⌂ Home</button>
+</header>
+
+<main>
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <span class="pill">SUNWAY COLLEGE IPOH</span>
+    <h1>Wellness<br>Connect 🎮</h1>
+    <p>
+      21 November 2026<br>
+      Your Health. Your Choices. Your Adventure.
+    </p>
+  </div>
+
+  <div class="panel" style="margin-bottom:18px">
+    <label for="nickname">
+      <strong>Your player nickname</strong>
+    </label>
+    <input
+      id="nickname"
+      class="input"
+      maxlength="18"
+      autocomplete="off"
+      placeholder="e.g. WellnessHero"
+    >
+    <div class="status">
+      Use a nickname, not your full name,
+      email or student ID. Your nickname
+      will appear publicly if you submit scores.
+    </div>
+    <p id="homeMessage" class="status" role="status"></p>
+  </div>
+
+  <div class="grid">
+    <article class="card">
+      <div class="big">👩‍⚕️</div>
+      <h2>Doctor's Challenge</h2>
+      <p>
+        Bust common health myths.
+        Answer questions and learn the
+        science from your virtual doctor.
+      </p>
+      <span class="pill">8 Questions • 100 Points</span>
+      <button class="btn" id="startQuiz">
+        Play Doctor's Challenge →
+      </button>
+    </article>
+
+    <article class="card">
+      <div class="big">🧑‍🎓</div>
+      <h2>Life Simulator</h2>
+      <p>
+        Experience a student's busy day.
+        Your everyday decisions shape
+        your game journey.
+      </p>
+      <span class="pill">6 Decisions • 100 Points</span>
+      <button class="btn" id="startLife">
+        Start Life Simulator →
+      </button>
+    </article>
+
+    <article class="card">
+      <div class="big">🏆</div>
+      <h2>Leaderboard</h2>
+      <p>
+        See the top Wellness Quest players
+        from across the event.
+      </p>
+      <button class="btn" id="openBoard">
+        View Rankings →
+      </button>
+    </article>
+
+    <article class="card">
+      <div class="big">🎖️</div>
+      <h2>My Wellness Badge</h2>
+      <p>
+        Complete both games to unlock
+        your downloadable Wellness Champion badge.
+      </p>
+      <button class="btn" id="openBadge">
+        My Rewards →
+      </button>
+    </article>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <div class="toolbar">
+    <strong>🩺 Doctor's Challenge</strong>
+    <span id="quizCount"></span>
+  </div>
+
+  <div class="track">
+    <div class="fill" id="quizBar"></div>
+  </div>
+
+  <div class="panel">
+    <div class="doctor">
+      <div class="face">👩‍⚕️</div>
+      <div id="doctorText" aria-live="polite">
+        Welcome to your virtual health consultation!
+      </div>
+    </div>
+
+    <h2 class="question" id="quizQuestion"></h2>
+    <div id="quizOptions" class="options"></div>
+
+    <div
+      id="quizFeedback"
+      class="feedback hidden"
+      aria-live="polite"
+    >
+      <strong id="quizFeedbackTitle"></strong>
+      <p id="quizFact"></p>
+      <button class="btn" id="quizNext">
+        Continue →
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="life" class="screen">
+  <div class="toolbar">
+    <strong>🌱 A Day in Your Shoes</strong>
+    <span id="lifeCount"></span>
+  </div>
+
+  <div class="track">
+    <div class="fill" id="lifeBar"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <small>⚡ Energy</small>
+      <strong id="energy">70</strong>
+    </div>
+    <div class="stat">
+      <small>😊 Mood</small>
+      <strong id="mood">70</strong>
+    </div>
+    <div class="stat">
+      <small>💚 Wellness</small>
+      <strong id="wellness">70</strong>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="big" id="lifeEmoji"></div>
+    <span class="pill" id="lifeTime"></span>
+    <h2 id="lifeTitle"></h2>
+    <p id="lifeStory"></p>
+  </div>
+
+  <div id="lifeOptions" class="options"></div>
+
+  <div
+    id="lifeFeedback"
+    class="feedback hidden"
+    aria-live="polite"
+  >
+    <strong id="lifeFeedbackTitle"></strong>
+    <p id="lifeFact"></p>
+    <button class="btn" id="lifeNext">
+      Continue →
+    </button>
+  </div>
+</section>
+
+<section id="result" class="screen">
+  <div class="panel center">
+    <div style="font-size:65px">🏆</div>
+    <h1 id="resultTitle"></h1>
+    <div class="points" id="resultPoints"></div>
+    <p id="resultMessage"></p>
+
+    <div class="actions" style="justify-content:center">
+      <button class="btn" id="submitScore">
+        Submit to Leaderboard
+      </button>
+      <button class="btn alt" id="replay">
+        Play Again
+      </button>
+      <button class="btn alt" id="resultHome">
+        Game Menu
+      </button>
+    </div>
+
+    <p
+      class="status"
+      id="submitMessage"
+      role="status"
+    ></p>
+  </div>
+</section>
+
+<section id="board" class="screen">
+  <div class="toolbar">
+    <h2>🏆 Event Leaderboard</h2>
+    <button class="btn alt" id="refreshBoard">
+      Refresh
+    </button>
+  </div>
+
+  <div class="panel">
+    <p class="status">
+      Combined best scores from both games.
+      Players completing both games rank
+      before players completing only one.
+    </p>
+
+    <div id="boardList" aria-live="polite"></div>
+    <p
+      id="boardStatus"
+      class="status"
+      role="status"
+    ></p>
+  </div>
+</section>
+
+<section id="badge" class="screen">
+  <div class="badge-card">
+    <div class="big">🏅</div>
+    <h1>WELLNESS CHAMPION</h1>
+    <h2 id="badgeName"></h2>
+    <p>
+      Sunway College Ipoh<br>
+      Wellness Connect 2026
+    </p>
+    <p id="badgeDescription"></p>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="downloadBadge">
+      Download Badge
+    </button>
+    <button class="btn alt" id="badgeHome">
+      Game Menu
+    </button>
+  </div>
+</section>
+
+<footer>
+  Educational activity only.
+  This game is not a medical diagnosis.
+  Life simulation scores are fictional
+  indicators, not measures of real health.
+  Medical content should be reviewed by
+  qualified event healthcare professionals.
+</footer>
+
+</main>
+
+<script>
+"use strict";
+
+/*
+  SUPABASE CONFIGURATION
+
+  Leave these placeholders unchanged for now.
+
+  We'll configure the database together
+  after confirming GitHub Pages is working.
+
+  Never use a Supabase secret or
+  service-role key in this file.
+*/
+const CONFIG = {
+  url: "https://YOUR-PROJECT.supabase.co",
+  key: "YOUR_SUPABASE_PUBLISHABLE_KEY"
+};
+
+const $ = id => document.getElementById(id);
+
+const txt = (id, value) => {
+  $(id).textContent = value;
+};
+
+const limit = value =>
+  Math.max(0, Math.min(100, value));
+
+function safeGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Game still works if storage is unavailable.
+  }
+}
+
+let playerId = safeGet("wq-player-id");
+
+if (!playerId) {
+  playerId = crypto.randomUUID();
+  safeSet("wq-player-id", playerId);
+}
+
+let nickname = safeGet("wq-nickname") || "";
+let currentGame = "";
+let index = 0;
+let quizPoints = 0;
+let latestScore = 0;
+
+let stats = {
+  energy: 70,
+  mood: 70,
+  wellness: 70
+};
+
+let completed = {
+  quiz: safeGet("wq-quiz-completed") === "yes",
+  life: safeGet("wq-life-completed") === "yes"
+};
+
+$("nickname").value = nickname;
+
+function show(screenId) {
+  document.querySelectorAll(".screen").forEach(el => {
+    el.classList.toggle(
+      "active",
+      el.id === screenId
+    );
+  });
+
+  window.scrollTo(0, 0);
+}
+
+function registerPlayer() {
+  const value = $("nickname").value.trim();
+
+  if (!/^[a-zA-Z0-9 _-]{2,18}$/.test(value)) {
+    txt(
+      "homeMessage",
+      "Choose 2–18 characters: letters, numbers, spaces, _ or -."
+    );
+    return false;
+  }
+
+  nickname = value;
+  safeSet("wq-nickname", nickname);
+  txt("homeMessage", "");
+  return true;
+}
+
+function makeOption(label, callback) {
+  const button = document.createElement("button");
+
+  button.className = "option";
+  button.textContent = label;
+  button.type = "button";
+  button.addEventListener("click", callback);
+
+  return button;
+}
+
+/* ==============================
+   GAME 1: DOCTOR'S CHALLENGE
+============================== */
+
+const quiz = [
+  {
+    q: "How much sleep is generally recommended for adults aged 18–64?",
+    a: [
+      "4–5 hours",
+      "7–9 hours",
+      "12–14 hours"
+    ],
+    correct: 1,
+    fact:
+      "Most adults need about 7–9 hours nightly. Regularly insufficient sleep can affect concentration, mood and health."
+  },
+  {
+    q: "Myth or fact: High blood pressure always causes obvious symptoms.",
+    a: ["Myth", "Fact"],
+    correct: 0,
+    fact:
+      "High blood pressure often has no noticeable symptoms. A blood pressure measurement is needed to detect it."
+  },
+  {
+    q: "Which drink is usually the best everyday hydration choice?",
+    a: [
+      "Sugary soda",
+      "Plain water",
+      "Energy drink"
+    ],
+    correct: 1,
+    fact:
+      "Water provides hydration without added sugar. Frequently consuming sugary drinks can contribute to excess calorie intake."
+  },
+  {
+    q: "Myth or fact: Diabetes is always caused by eating too much sugar.",
+    a: ["Myth", "Fact"],
+    correct: 0,
+    fact:
+      "Diabetes has different causes. Type 1 is autoimmune; type 2 has multiple risk factors including genetics and lifestyle."
+  },
+  {
+    q: "What is the minimum recommended weekly moderate-intensity aerobic activity for most adults?",
+    a: [
+      "30 minutes",
+      "150 minutes",
+      "600 minutes"
+    ],
+    correct: 1,
+    fact:
+      "WHO recommends at least 150–300 minutes per week for adults. Even smaller amounts of activity provide benefits."
+  },
+  {
+    q: "Myth or fact: Only older people can develop high blood pressure.",
+    a: ["Myth", "Fact"],
+    correct: 0,
+    fact:
+      "High blood pressure can occur in younger adults too. Risk is affected by multiple factors, and screening is important."
+  },
+  {
+    q: "What can help when you feel overwhelmed by assignments?",
+    a: [
+      "Avoid everyone",
+      "Ignore sleep indefinitely",
+      "Break tasks down and seek support"
+    ],
+    correct: 2,
+    fact:
+      "Planning manageable steps and reaching out for support can help with stress. Seek professional help when distress persists."
+  },
+  {
+    q: "Myth or fact: Mental health conditions can be treated with professional support.",
+    a: ["Myth", "Fact"],
+    correct: 1,
+    fact:
+      "Many mental health conditions can improve with appropriate treatment and support. Seeking help is a constructive step."
+  }
+];
+
+function startQuiz() {
+  if (!registerPlayer()) return;
+
+  currentGame = "quiz";
+  index = 0;
+  quizPoints = 0;
+
+  show("quiz");
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const question = quiz[index];
+
+  txt("quizCount", `${index + 1}/${quiz.length}`);
+
+  $("quizBar").style.width =
+    `${index / quiz.length * 100}%`;
+
+  txt(
+    "doctorText",
+    "Let's explore some health science!"
+  );
+
+  txt("quizQuestion", question.q);
+
+  $("quizFeedback").classList.add("hidden");
+
+  const holder = $("quizOptions");
+  holder.replaceChildren();
+
+  question.a.forEach((label, optionIndex) => {
+    holder.appendChild(
+      makeOption(label, () => {
+        const correct =
+          optionIndex === question.correct;
+
+        if (correct) {
+          quizPoints += 100 / quiz.length;
+        }
+
+        [...holder.children].forEach((button, j) => {
+          button.disabled = true;
+
+          if (j === question.correct) {
+            button.classList.add("correct");
+          } else if (j === optionIndex) {
+            button.classList.add("wrong");
+          }
+        });
+
+        txt(
+          "doctorText",
+          correct
+            ? "Excellent answer! 🌟"
+            : "Good try. Here's what science tells us! 💡"
+        );
+
+        txt(
+          "quizFeedbackTitle",
+          correct
+            ? "✅ Correct!"
+            : "📖 Learning moment"
+        );
+
+        txt("quizFact", question.fact);
+
+        $("quizFeedback").classList.remove("hidden");
+
+        $("quizBar").style.width =
+          `${(index + 1) / quiz.length * 100}%`;
+      })
+    );
+  });
+}
+
+function nextQuiz() {
+  index++;
+
+  if (index < quiz.length) {
+    renderQuiz();
+  } else {
+    finishGame("quiz", Math.round(quizPoints));
+  }
+}
+
+/* ==============================
+   GAME 2: LIFE SIMULATOR
+============================== */
+
+const scenes = [
+  {
+    time: "11:30 PM • Night Before",
+    icon: "🌙",
+    title: "One More Episode?",
+    story:
+      "You have class tomorrow. How will you spend tonight?",
+    choices: [
+      [
+        "📱 Watch until 3 AM",
+        [-25, -10, -10],
+        "Not enough sleep can affect concentration and mood."
+      ],
+      [
+        "😴 Sleep at a regular time",
+        [20, 12, 12],
+        "A consistent sleep routine supports wellbeing."
+      ],
+      [
+        "📖 Read briefly before bed",
+        [12, 10, 10],
+        "A relaxing bedtime routine may make it easier to sleep."
+      ]
+    ]
+  },
+  {
+    time: "7:30 AM • Breakfast",
+    icon: "🍳",
+    title: "Breakfast Time",
+    story:
+      "You need energy for a busy college day.",
+    choices: [
+      [
+        "🥚 Wholegrain toast, eggs and fruit",
+        [15, 7, 16],
+        "Varied, nutrient-rich meals help support overall nutrition."
+      ],
+      [
+        "🥤 Only a sugary drink",
+        [3, 2, -10],
+        "Sugary drinks alone provide limited nutrients."
+      ],
+      [
+        "🍌 Water and a nutritious snack",
+        [7, 6, 8],
+        "Planning nutritious food ahead can help on busy days."
+      ]
+    ]
+  },
+  {
+    time: "10:00 AM • College",
+    icon: "📚",
+    title: "Assignment Overload",
+    story:
+      "You have several deadlines approaching. What now?",
+    choices: [
+      [
+        "😰 Panic and multitask",
+        [-18, -20, -9],
+        "Breaking big tasks into steps can help reduce overwhelm."
+      ],
+      [
+        "📝 Make a realistic plan",
+        [-4, 15, 10],
+        "Prioritisation can make deadlines more manageable."
+      ],
+      [
+        "💬 Talk to a friend and plan",
+        [-3, 18, 12],
+        "Social support can help with everyday stress."
+      ]
+    ]
+  },
+  {
+    time: "1:00 PM • Lunch",
+    icon: "🍛",
+    title: "Choosing Lunch",
+    story:
+      "Your friends invite you out. What would you prefer?",
+    choices: [
+      [
+        "🥗 Balanced lunch with vegetables",
+        [13, 8, 16],
+        "A varied, balanced diet supports general health."
+      ],
+      [
+        "🥤 Fried snacks and sweet drinks",
+        [4, 8, -12],
+        "Frequent excess intake of sugary drinks and fried foods may affect long-term health."
+      ],
+      [
+        "🍚 Rice, protein and vegetables",
+        [12, 8, 15],
+        "Food variety and appropriate portions are useful habits."
+      ]
+    ]
+  },
+  {
+    time: "5:30 PM • After Class",
+    icon: "🚶",
+    title: "Your Afternoon",
+    story:
+      "You've finished classes. How will you unwind?",
+    choices: [
+      [
+        "🚶 Take a walk with a friend",
+        [-2, 15, 16],
+        "Walking supports activity and can be enjoyable socially."
+      ],
+      [
+        "🎮 Relax with video games",
+        [6, 9, 0],
+        "Leisure is valuable; balance sitting with regular activity."
+      ],
+      [
+        "🏃 Go for a suitable workout",
+        [-10, 15, 18],
+        "Regular activity supports cardiovascular and mental wellbeing."
+      ]
+    ]
+  },
+  {
+    time: "9:00 PM • Evening",
+    icon: "🧘",
+    title: "Time to Recharge",
+    story:
+      "What will you do before another busy day?",
+    choices: [
+      [
+        "📱 Scroll social media very late",
+        [-16, -8, -9],
+        "Screen use that delays bedtime may reduce sleep time."
+      ],
+      [
+        "😴 Wind down and sleep",
+        [17, 13, 15],
+        "Rest and a consistent schedule support daily wellbeing."
+      ],
+      [
+        "💬 Connect with someone I trust",
+        [8, 18, 9],
+        "Meaningful relationships can support mental wellbeing."
+      ]
+    ]
+  }
+];
+
+function startLife() {
+  if (!registerPlayer()) return;
+
+  currentGame = "life";
+  index = 0;
+
+  stats = {
+    energy: 70,
+    mood: 70,
+    wellness: 70
+  };
+
+  show("life");
+  renderLife();
+}
+
+function renderStats() {
+  txt("energy", stats.energy);
+  txt("mood", stats.mood);
+  txt("wellness", stats.wellness);
+}
+
+function renderLife() {
+  const scene = scenes[index];
+
+  renderStats();
+
+  txt(
+    "lifeCount",
+    `${index + 1}/${scenes.length}`
+  );
+
+  $("lifeBar").style.width =
+    `${index / scenes.length * 100}%`;
+
+  txt("lifeEmoji", scene.icon);
+  txt("lifeTime", scene.time);
+  txt("lifeTitle", scene.title);
+  txt("lifeStory", scene.story);
+
+  $("lifeFeedback").classList.add("hidden");
+  $("lifeOptions").classList.remove("hidden");
+
+  const holder = $("lifeOptions");
+  holder.replaceChildren();
+
+  scene.choices.forEach(choice => {
+    holder.appendChild(
+      makeOption(choice[0], () => {
+        stats.energy = limit(
+          stats.energy + choice[1][0]
+        );
+
+        stats.mood = limit(
+          stats.mood + choice[1][1]
+        );
+
+        stats.wellness = limit(
+          stats.wellness + choice[1][2]
+        );
+
+        renderStats();
+
+        holder.classList.add("hidden");
+
+        txt(
+          "lifeFeedbackTitle",
+          "💡 What you can learn"
+        );
+
+        txt("lifeFact", choice[2]);
+
+        $("lifeFeedback").classList.remove("hidden");
+
+        $("lifeBar").style.width =
+          `${(index + 1) / scenes.length * 100}%`;
+      })
+    );
+  });
+}
+
+function nextLife() {
+  index++;
+
+  if (index < scenes.length) {
+    renderLife();
+  } else {
+    const result = Math.round(
+      (
+        stats.energy +
+        stats.mood +
+        stats.wellness
+      ) / 3
+    );
+
+    finishGame("life", result);
+  }
+}
+
+/* ==============================
+   SCORE AND RESULTS
+============================== */
+
+function finishGame(game, score) {
+  currentGame = game;
+  latestScore = score;
+
+  completed[game] = true;
+  safeSet(`wq-${game}-completed`, "yes");
+
+  const oldBest = Number(
+    safeGet(`wq-${game}-best`) || 0
+  );
+
+  safeSet(
+    `wq-${game}-best`,
+    Math.max(score, oldBest)
+  );
+
+  txt(
+    "resultTitle",
+    score >= 85
+      ? "Wellness Champion! 🌟"
+      : score >= 60
+        ? "Great Progress! 💚"
+        : "Keep Exploring! 🌱"
+  );
+
+  txt("resultPoints", `${score} / 100`);
+
+  txt(
+    "resultMessage",
+    game === "quiz"
+      ? "You've completed the doctor's quiz. Remember the facts and keep learning!"
+      : "You've finished your simulated day. These game points are not a clinical assessment."
+  );
+
+  txt(
+    "submitMessage",
+    "Optional: publish your nickname and score to the event leaderboard."
+  );
+
+  $("submitScore").disabled = false;
+  $("submitScore").textContent = "Submit to Leaderboard";
+
+  show("result");
+}
+
+/* ==============================
+   SUPABASE LEADERBOARD
+============================== */
+
+function isConfigured() {
+  return (
+    CONFIG.url.startsWith("https://") &&
+    !CONFIG.url.includes("YOUR-PROJECT") &&
+    CONFIG.key !== "YOUR_SUPABASE_PUBLISHABLE_KEY"
+  );
+}
+
+async function api(path, options = {}) {
+  if (!isConfigured()) {
+    throw new Error(
+      "The leaderboard is not connected yet. Supabase setup is the next step."
+    );
+  }
+
+  const url =
+    CONFIG.url.replace(/\/$/, "") +
+    "/rest/v1/" +
+    path;
+
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      apikey: CONFIG.key,
+      "Content-Type": "application/json",
+      ...options.headers
+    }
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+
+    throw new Error(
+      `Database error ${response.status}: ${body.slice(0, 160)}`
+    );
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  const content = await response.text();
+
+  return content ? JSON.parse(content) : null;
+}
+
+async function submitScore() {
+  if (!registerPlayer()) {
+    show("home");
+    return;
+  }
+
+  const button = $("submitScore");
+  button.disabled = true;
+
+  txt(
+    "submitMessage",
+    "Submitting your score..."
+  );
+
+  try {
+    await api("scores", {
+      method: "POST",
+      headers: {
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify({
+        player_id: playerId,
+        nickname: nickname,
+        game: currentGame,
+        score: latestScore
+      })
+    });
+
+    txt(
+      "submitMessage",
+      "✅ Score submitted successfully!"
+    );
+
+    button.textContent = "Score Submitted ✓";
+  } catch (error) {
+    txt("submitMessage", error.message);
+    button.disabled = false;
+  }
+}
+
+async function openBoard() {
+  show("board");
+
+  const holder = $("boardList");
+  holder.replaceChildren();
+
+  txt(
+    "boardStatus",
+    "Loading event rankings..."
+  );
+
+  try {
+    const rows = await api(
+      "leaderboard?select=nickname,quiz_score,life_score,total,games_played&order=games_played.desc,total.desc&limit=25"
+    );
+
+    txt(
+      "boardStatus",
+      rows.length
+        ? "Top 25 participants"
+        : "No scores yet."
+    );
+
+    rows.forEach((row, i) => {
+      const div = document.createElement("div");
+      div.className = "board-row";
+
+      const rank = document.createElement("span");
+
+      rank.textContent =
+        i === 0
+          ? "🥇"
+          : i === 1
+            ? "🥈"
+            : i === 2
+              ? "🥉"
+              : `${i + 1}.`;
+
+      const name = document.createElement("span");
+      name.className = "name";
+
+      name.textContent =
+        row.nickname +
+        (row.games_played === 2 ? " 🎖️" : "");
+
+      const points = document.createElement("span");
+      points.className = "score";
+      points.textContent = `${row.total}/200`;
+
+      div.append(rank, name, points);
+      holder.appendChild(div);
+    });
+  } catch (error) {
+    txt("boardStatus", error.message);
+  }
+}
+
+/* ==============================
+   WELLNESS BADGE
+============================== */
+
+function openBadge() {
+  show("badge");
+
+  const unlocked =
+    completed.quiz && completed.life;
+
+  txt(
+    "badgeName",
+    nickname || "Wellness Explorer"
+  );
+
+  txt(
+    "badgeDescription",
+    unlocked
+      ? "Congratulations! You've completed both learning adventures."
+      : "Complete both games on this browser to unlock your badge."
+  );
+
+  $("downloadBadge").disabled = !unlocked;
+}
+
+function downloadBadge() {
+  if (!(completed.quiz && completed.life)) {
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1200;
+  canvas.height = 750;
+
+  const c = canvas.getContext("2d");
+
+  if (!c) return;
+
+  const gradient = c.createLinearGradient(
+    0, 0, 1200, 750
+  );
+
+  gradient.addColorStop(0, "#243c91");
+  gradient.addColorStop(1, "#0aa996");
+
+  c.fillStyle = gradient;
+  c.fillRect(0, 0, 1200, 750);
+
+  c.strokeStyle = "#ffd875";
+  c.lineWidth = 14;
+  c.strokeRect(40, 40, 1120, 670);
+
+  c.textAlign = "center";
+  c.fillStyle = "white";
+
+  c.font = "bold 40px Arial";
+  c.fillText(
+    "SUNWAY COLLEGE IPOH",
+    600, 150
+  );
+
+  c.font = "110px Arial";
+  c.fillText("🏆", 600, 290);
+
+  c.font = "bold 66px Arial";
+  c.fillText(
+    "WELLNESS CHAMPION",
+    600, 385
+  );
+
+  c.font = "bold 48px Arial";
+  c.fillText(
+    nickname.slice(0, 18),
+    600, 475
+  );
+
+  c.font = "29px Arial";
+  c.fillText(
+    "Completed both Wellness Quest games",
+    600, 545
+  );
+
+  c.fillText(
+    "Wellness Connect • 21 November 2026",
+    600, 600
+  );
+
+  const link = document.createElement("a");
+  link.download = "wellness-champion.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+
+/* ==============================
+   BUTTON EVENTS
+============================== */
+
+$("startQuiz").addEventListener(
+  "click", startQuiz
 );
 
-create index if not exists scores_player_idx
-  on public.scores (player_id, game);
-
-create index if not exists scores_created_idx
-  on public.scores (created_at desc);
-
--- Apply row-level security.
-alter table public.scores enable row level security;
-
--- Remove broad public permissions.
-revoke all on public.scores from anon, authenticated;
-
--- Permit only public reading and score submission.
-grant select, insert
-on public.scores to anon;
-
--- Reading policy.
-drop policy if exists "Public score reading"
-on public.scores;
-
-create policy "Public score reading"
-on public.scores
-for select
-to anon
-using (true);
-
--- Submission policy.
-drop policy if exists "Public score submission"
-on public.scores;
-
-create policy "Public score submission"
-on public.scores
-for insert
-to anon
-with check (
-  score between 0 and 100
-  and game in ('quiz','life')
-  and nickname ~ '^[A-Za-z0-9 _-]{2,18}$'
+$("startLife").addEventListener(
+  "click", startLife
 );
 
--- Aggregate each browser's highest score
--- from each game.
-create or replace view public.leaderboard
-with (security_invoker = true)
-as
-with best_scores as (
-  select
-    player_id,
-    max(nickname) as nickname,
-    max(score) filter (
-      where game = 'quiz'
-    ) as quiz_score,
-    max(score) filter (
-      where game = 'life'
-    ) as life_score,
-    count(distinct game) as games_played
-  from public.scores
-  group by player_id
-)
-select
-  player_id,
-  nickname,
-  coalesce(quiz_score,0)::integer as quiz_score,
-  coalesce(life_score,0)::integer as life_score,
-  (
-    coalesce(quiz_score,0) +
-    coalesce(life_score,0)
-  )::integer as total,
-  games_played
-from best_scores;
+$("quizNext").addEventListener(
+  "click", nextQuiz
+);
 
-revoke all on public.leaderboard from anon, authenticated;
-grant select on public.leaderboard to anon;
+$("lifeNext").addEventListener(
+  "click", nextLife
+);
+
+$("openBoard").addEventListener(
+  "click", openBoard
+);
+
+$("refreshBoard").addEventListener(
+  "click", openBoard
+);
+
+$("openBadge").addEventListener(
+  "click", openBadge
+);
+
+$("downloadBadge").addEventListener(
+  "click", downloadBadge
+);
+
+$("submitScore").addEventListener(
+  "click", submitScore
+);
+
+$("homeButton").addEventListener(
+  "click", () => show("home")
+);
+
+$("resultHome").addEventListener(
+  "click", () => show("home")
+);
+
+$("badgeHome").addEventListener(
+  "click", () => show("home")
+);
+
+$("replay").addEventListener(
+  "click", () => {
+    if (currentGame === "quiz") {
+      startQuiz();
+    } else {
+      startLife();
+    }
+  }
+);
+</script>
+</body>
+</html>
